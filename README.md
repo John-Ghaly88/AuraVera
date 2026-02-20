@@ -104,9 +104,19 @@ In client.ipynb, Cell 4 contains the server IP address:
 SERVER_IP = "127.0.0.1"
 ```
 
-
 Use 127.0.0.1 for local testing
 Replace with the public/private AWS IP when running in the cloud.
+
+
+
+## Dataset
+ 
+This project uses the *SOCOFing (Synthetic Fingerprint Database)* dataset for biometric evaluation.
+ 
+- Dataset source: https://www.kaggle.com/datasets/ruizgara/socofing
+- The dataset is used strictly for *research and experimental evaluation purposes*.
+- All rights and credits belong to the original dataset authors.
+
 
 
 ## 📄 License
