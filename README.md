@@ -59,7 +59,8 @@ Get-Process -Id (Get-NetTCPConnection -LocalPort 5001).OwningProcess | Stop-Proc
 Then:
 1. Open server.ipynb
 2. Run all cells
-3. The last cell will remain running, do NOT stop or close it.
+
+⚠️ The last cell will remain running, do NOT stop or close it.
 
 This notebook acts as the authentication server and verifier.
 
@@ -80,8 +81,9 @@ This summary reports successful and blocked authentication attempts.
 
 ## ☁️ Running on AWS
 To run the system against the cloud deployment:
-- Open clientAWS.ipynb
-- Run all cells
+- First make sure you have your EC2 instance running on AWS environment
+- Copy the Public IPv4 address to Cell 4 in clientAWS.ipynb
+- Run all cells in clientAWS.ipynb
 
 In this mode, both the server and ZKP service are already deployed on AWS.
 
