@@ -79,14 +79,65 @@ This summary reports successful and blocked authentication attempts.
 
 
 
-## ☁️ Running on AWS
-To run the system against the cloud deployment:
-- First make sure you have your EC2 instance running on AWS environment
-- Copy the Public IPv4 address to Cell 4 in clientAWS.ipynb
-- Run all cells in clientAWS.ipynb
+## ☁️ How to Run the Project (AWS Setup)
+1. Start running your EC2 instance on AWS Console
+2. Copy the Public IPv4 address to Cell 4 in clientAWS.ipynb, in both variables the GO_SERVICE_URL & the SERVER_URL
+3. Compile the circuit files into Linux Binary file.
+```bash
+cd zkp-circuit
+```
+```bash
+$env:GOOS = "linux”
+```
+```bash
+$env:GOARCH = "amd64”
+```
+Choose a directory to save the files to be depolyed in, and add its path in the below cmd
+```bash
+go build -o "Deploy_Directory_Path/zkp_circuit" main.go
+```
+4. Export the serverAWS.ipynb to the Deploy_Directory as a .py file
+5. Login into the AWS EC2 instance from the local terminal
 
-In this mode, both the server and ZKP service are already deployed on AWS.
+Change the path to the key.pem file you downloaded when creating the EC2 instance, and add the Public IP of AWS's running EC2 instance in the below cmd
+```bash
+ssh -i "PATH_TO_THE_key.pem" ubuntu@PUBLIC_AWS_IPV4
+```
+6. Deploy the serverAWS and circuit files to AWS
 
+In a different terminal
+```bash
+cd ../Deploy_Directory_Path
+```
+Deploy the ZKP Circuit file
+```bash
+scp -i "PATH_TO_THE_key.pem" .\zkp_circuit ubuntu@PUBLIC_AWS_IPV4:~
+```
+Deploy the Server file
+```bash
+- scp -i "PATH_TO_THE_key.pem" .\serverAWS.py ubuntu@PUBLIC_AWS_IPV4:~
+```
+7. Configure the files on the EC2 instance
+
+Go back to the EC2 instance terminal, then run the following commnds:
+```bash
+chmod +x zkp_circuit
+```
+```bash
+sudo apt update
+```
+```bash
+sudo apt install python3-requests python3-psutil -y
+```
+Run the ZKP Circuit on AWS
+```bash
+./zkp_circuit &
+```
+Run the Server on AWS
+```bash
+python3 serverAWS.py
+```
+8. Open clientAWS.ipynb file on VS Code, and run all cells
 
 
 ## 🔧 Important Configuration Notes
@@ -98,16 +149,13 @@ NUM_SUBJECTS = <value>
 ```
 This variable controls how many fingerprint images (subjects) are used during testing. Increasing it increases the total number of test cases.
 
-
-
 - Server IP Configuration
 In client.ipynb, Cell 4 contains the server IP address:
 ```bash
 SERVER_IP = "127.0.0.1"
 ```
 
-Use 127.0.0.1 for local testing
-Replace with the public/private AWS IP when running in the cloud.
+Use 127.0.0.1 for local testing, and replace with the public/private AWS IP when running in the cloud.
 
 
 
